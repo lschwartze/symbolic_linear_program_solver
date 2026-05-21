@@ -3,8 +3,8 @@ import numpy as np
 import symbolic_fraction as sb
 from pprint import pprint
 
-n = sp.Symbol("n")
-m = sp.Symbol("m", positive=True)
+n = sp.Symbol("n", finite=True)
+m = sp.Symbol("m", positive=True, finite=True)
 matrix = np.array(
                 [[0, 0, 0, 0, -1, -1, -2, 0],
                 [1, 0, 0, 0, 1, 0, 1, 6],
@@ -48,13 +48,48 @@ def comparison(rel, restrictions):
     if type(rel) == bool:
         return rel, restrictions
     else:
-        if rel in restrictions:
+        if rel in restrictions: # rel was considered earlier already
             return restrictions[rel], restrictions
+        if ~rel in restrictions: # negation of rel was considered earlier already
+            return restrictions[~rel], restrictions
+        
+        follows = follows_from_restrictions(rel, restrictions) # do current restrictions imply rel
+        if type(follows) == dict:
+            return follows[rel], restrictions
+
         add_restriction = input(f"add {rel} as restriction? [y/n] ")
         while not add_restriction in ["y","n"]:
             add_restriction = input(f"add {sp.simplify(rel)} as restriction? [y/n] ")
         restrictions[rel] = add_restriction=="y"
         return restrictions[rel], restrictions
+    
+def follows_from_restrictions(rel, restrictions):
+    if len(list(rel.free_symbols)) > 1: # Currently no handling for relations with more symbols
+        return False
+    solution_set = 1<=1
+    num_compatible_restrictions = 0
+    for ineq in restrictions: # combine all relevant known restrictions
+        if ineq.free_symbols == rel.free_symbols:
+            if restrictions[ineq]:
+                solution_set = sp.And(solution_set, ineq)
+            else:
+                solution_set = sp.And(solution_set, ~ineq)
+            num_compatible_restrictions+=1
+    
+    if num_compatible_restrictions==0: # no previous restrictions can be used
+        return False
+
+    solution_set = solution_set.as_set()
+    rel_set = rel.as_set()
+    not_rel_set = (~rel).as_set()
+
+    if solution_set.is_subset(rel_set):
+        return {rel: True} # new relation must be true
+    if solution_set.is_subset(not_rel_set):
+        return {rel: False} # new relation must be false
+    return False
+    
+
 
 def simplex(matrix, restrictions):
     pprint(matrix)
