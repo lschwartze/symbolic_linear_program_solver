@@ -8,7 +8,7 @@ symbolic_fraction implements a class similar to Python's <code> fractions </code
 This is still very much work in progress.
 
 ### next steps
-- clean up the simplex algorithm
-- change behaviour of arithmetic comparisons of symbolic variables
+- ~~clean up the simplex algorithm~~
+- ~~change behaviour of arithmetic comparisons of symbolic variables~~
 - easier way to input tableau
 - form standard tableau from LP

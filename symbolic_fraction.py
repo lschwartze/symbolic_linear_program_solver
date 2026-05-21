@@ -111,10 +111,7 @@ class symbolic_fraction:
         try:
             return bool(res)
         except:
-            add_restriction = input(f"add {res} as restriction? [y/n] ")
-            while not add_restriction in ["y","n"]:
-                add_restriction = input(f"add {sp.simplify(res)} as restriction? [y/n] ")
-            return add_restriction == "y"
+            return res
 
     def __gt__(self,other):
         if isinstance(other, (int, float)):
@@ -126,63 +123,3 @@ class symbolic_fraction:
     
     def __rgt__(self,other):
         return self<other
-    
-'''sf_1 = symbolic_fraction(12,8)
-sf_2 = symbolic_fraction(8,12)
-print(sf_1)
-print(sf_2)
-print(15*sf_1)
-print(sf_2*15)
-print(sf_1*sf_2)
-print("\n")
-
-sf_3 = symbolic_fraction(45,7)
-sf_4 = symbolic_fraction(18,8)
-print(sf_3/sf_4)
-print(sf_4/18)
-print(8/sf_4)
-print("\n")
-
-sf_5 = symbolic_fraction(1,2)
-sf_6 = symbolic_fraction(1,2)
-print(sf_5+sf_6)
-print(sf_6+1)
-print(1+sf_6)
-print("\n")
-
-sf_7 = symbolic_fraction(5,6)
-sf_8 = symbolic_fraction(4,2)
-print(sf_7-sf_8)
-print(1-sf_7)
-print("\n")
-
-print(sf_7)
-print(sf_6)
-print(sf_7<sf_6)
-print(sf_6<sf_7)
-print(sf_7>sf_6)
-print(sf_6>sf_7)
-
-
-l = [symbolic_fraction(x,3) for x in range(5)]
-print(l)
-
-x = np.array(list(range(1,5)))
-y = symbolic_fraction(4,3)
-print(y*x)
-
-n = sp.Symbol("n", positive = True)
-m = sp.Symbol("m", negative = True)
-x = symbolic_fraction(2,3)
-y = symbolic_fraction(4*n,5*m)
-z = symbolic_fraction(1*m,3)
-print(x*y)
-print(x*z)
-print(y*z)
-print(2+x)
-print(x+2)
-print(y+2)
-print(2+y)
-print(z+y)
-print(y+z)
-print(symbolic_fraction(m,1)+2<0)'''
