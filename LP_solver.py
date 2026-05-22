@@ -10,7 +10,7 @@ matrix = np.array(
                 [1, 0, 0, 0, 1, 0, 1, 6],
                 [0, 1, 0, 0, 0, 1, 1, n],
                 [0, 0, 1, 0, 0, 3, -1, 6],
-                [0, 0, 0, 1, 1, 0, 0, 3]],
+                [0, 0, 0, 1, m, 0, 0, 3]],
             dtype=object)
 
 matrix = np.array([[sb.symbolic_fraction(x,1) for x in l] for l in matrix])
@@ -45,9 +45,9 @@ def comparison(rel, restrictions):
     Accepted relations will also be stored in a dictionary which the function will consult to 
     determine the validity of future relations.
     '''
-    if type(rel) == bool:
-        return rel, restrictions
-    else:
+    try:
+        return bool(rel), restrictions
+    except:
         if rel in restrictions: # rel was considered earlier already
             return restrictions[rel], restrictions
         if ~rel in restrictions: # negation of rel was considered earlier already

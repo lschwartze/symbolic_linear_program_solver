@@ -106,7 +106,7 @@ class symbolic_fraction:
         if isinstance(other, (int, float)):
             res =  self.a/self.b < other
         else:
-            res = self.a/self.b < other.a*other.b
+            res = self.a/self.b < other.a/other.b
         res = sp.simplify(res)
         try:
             return bool(res)
@@ -114,9 +114,16 @@ class symbolic_fraction:
             return res
 
     def __gt__(self,other):
+        res = ""
         if isinstance(other, (int, float)):
-            return self.a>other*self.b
-        return self.a*other.b > other.a*self.b
+            res =  self.a/self.b > other
+        else:
+            res = self.a/self.b > other.a/other.b
+        res = sp.simplify(res)
+        try:
+            return bool(res)
+        except:
+            return res
     
     def __rlt__(self,other):
         return self>other
